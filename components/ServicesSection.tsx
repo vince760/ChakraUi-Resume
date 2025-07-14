@@ -60,7 +60,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ services = [] }) => {
             <Heading
               fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
               fontWeight="bold"
-              color={useColorModeValue("#c3cede", "white")}
+              color={"white"}
             >
               What I Do
             </Heading>
@@ -101,16 +101,11 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ services = [] }) => {
                   {service.icon}
                 </Text>
 
-                <Heading
-                  fontSize="xl"
-                  fontWeight="bold"
-                  color={useColorModeValue("gray.900", "white")}
-                  mb={4}
-                >
+                <Heading fontSize="xl" fontWeight="bold" color={"grey"} mb={4}>
                   {service.title}
                 </Heading>
 
-                <Text color={useColorModeValue("gray.600", "gray.300")} lineHeight="relaxed">
+                <Text color={"grey"} lineHeight="relaxed">
                   {service.description}
                 </Text>
 

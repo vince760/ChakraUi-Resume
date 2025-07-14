@@ -10,7 +10,6 @@ import {
   HStack,
   Text,
   FormControl,
-  
   Input,
   Textarea,
   Button,
@@ -20,6 +19,8 @@ import {
   useColorModeValue
 } from "@chakra-ui/react";
 import { FiPhone, FiMail } from "react-icons/fi";
+import emailjs from "@emailjs/browser";
+import { EMAILJS_CONFIG } from "../config/emailjs";
 
 interface ContactSectionProps {
   personalInfo: PersonalInfo;
@@ -33,6 +34,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ personalInfo }) => {
     subject: "",
     message: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -42,11 +44,42 @@ const ContactSection: React.FC<ContactSectionProps> = ({ personalInfo }) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically handle form submission
-    console.log("Form submitted:", formData);
-    alert("Thank you for your message! I'll get back to you soon.");
+    setIsSubmitting(true);
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message,
+        to_name: personalInfo.name,
+        to_email: personalInfo.email
+      };
+console.log(EMAILJS_CONFIG.PUBLIC_KEY);
+      await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID,
+        templateParams,
+        EMAILJS_CONFIG.PUBLIC_KEY
+      );
+
+      alert("Thank you for your message! I'll get back to you soon.");
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        subject: "",
+        message: ""
+      });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Sorry, there was an error sending your message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -301,6 +334,8 @@ const ContactSection: React.FC<ContactSectionProps> = ({ personalInfo }) => {
                 px={6}
                 borderRadius="lg"
                 transition="colors 0.3s"
+                isLoading={isSubmitting}
+                loadingText="Sending..."
                 _focus={{
                   outline: "none",
                   ring: 2,

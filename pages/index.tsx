@@ -20,12 +20,13 @@ const portfolioProjects = [
     id: 101,
     name: "OLI Systems",
     url: "https://www.olisystems.com/",
-    technologies: ["JAVASCRIPT", "SVELTE", "NODE-JS", "AWS", "KEYCLOAK", "SALESFORCE"],
+    technologies: ["JAVASCRIPT", "SVELTE", "NODE-JS", "AWS", "KEYCLOAK", "SALESFORCE", "Kubernetes", "Docker", "PostgreSQL", "Redis", ],
     type: "professional" as const
   },
   {
     id: 102,
     name: "Outlayr",
+    url: "https://www.outlayr.com/",
     technologies: [
       "REACT",
       "JAVASCRIPT",
@@ -42,14 +43,14 @@ const portfolioProjects = [
   {
     id: 103,
     name: "Source One Inventory Solutions",
-    url: "https://eventi-solutions.azurewebsites.net/",
-    technologies: ["CUSTOM WEBSITES"],
+
+    technologies: ["React", "MUI", "Node.js", "MSSQL", "Shopify", ".NET", "C#"],
     type: "professional" as const
   },
   {
     id: 104,
     name: "Force Tracker",
-    url: "https://forcetracker.azurewebsites.net/",
+
     technologies: ["REACT", "JAVASCRIPT", "C#", "ASP.NET", "T-SQL"],
     type: "professional" as const
   }

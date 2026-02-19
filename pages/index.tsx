@@ -15,16 +15,42 @@ const portfolioProjects = [
     technologies: project.technologies,
     type: "personal" as const
   })),
-  // Add professional projects from experience
   {
-    id: 101,
-    name: "OLI Systems",
-    url: "https://www.olisystems.com/",
-    technologies: ["JAVASCRIPT", "SVELTE", "NODE-JS", "AWS", "KEYCLOAK", "SALESFORCE", "Kubernetes", "Docker", "PostgreSQL", "Redis", ],
+    name: "DealerVision.Com",
+    url: "https://www.dealervision.com/",
+    technologies: [
+      "C#",
+      "ASP.NET Core",
+      "Razor Pages",
+      "Entity Framework Core",
+      "SQL Server",
+      "Hangfire",
+      "FluentValidation",
+      "OpenTelemetry",
+      "Facebook Graph API"
+    ],
     type: "professional" as const
   },
   {
-    id: 102,
+    name: "OLI Systems",
+    url: "https://www.olisystems.com/",
+    technologies: [
+      "JAVASCRIPT",
+      "SVELTE",
+      "NODE-JS",
+      "AWS",
+      "KEYCLOAK",
+      "SALESFORCE",
+      "Kubernetes",
+      "Docker",
+      "PostgreSQL",
+      "Redis",
+      "Python",
+      "Docker"
+    ],
+    type: "professional" as const
+  },
+  {
     name: "Outlayr",
     url: "https://www.outlayr.com/",
     technologies: [
@@ -36,19 +62,19 @@ const portfolioProjects = [
       "SENDGRID",
       "TWILIO",
       "AWS",
-      "AZURE"
+      "AZURE",
+      "Kotlin",
+      "Swift"
     ],
     type: "professional" as const
   },
   {
-    id: 103,
     name: "Source One Inventory Solutions",
 
     technologies: ["React", "MUI", "Node.js", "MSSQL", "Shopify", ".NET", "C#"],
     type: "professional" as const
   },
   {
-    id: 104,
     name: "Force Tracker",
 
     technologies: ["REACT", "JAVASCRIPT", "C#", "ASP.NET", "T-SQL"],

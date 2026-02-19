@@ -36,9 +36,15 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ services = [] }) => {
     },
     {
       id: 3,
-      title: "Full Stack Development",
-      description: "Front End, Back End, Database Collection.",
-      icon: "🚀"
+      title: "Database Management",
+      description: "Scalable database design across SQL and NoSQL — optimized queries, clean schemas, and solid data integrity.",
+      icon: "🗄️"
+    },
+    {
+      id: 4,
+      title: "DevOps & Cloud",
+      description: "Automated CI/CD pipelines, Docker containerization, and cloud deployments on AWS and Azure.",
+      icon: "☁️"
     }
   ];
 
@@ -60,14 +66,21 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ services = [] }) => {
             <Heading
               fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
               fontWeight="bold"
-              color={"white"}
+              color="white"
+              mb={1}
             >
               What I Do
             </Heading>
+            <Box
+              w="60px"
+              h="3px"
+              bgGradient="linear(to-r, blue.400, purple.500)"
+              borderRadius="full"
+            />
           </VStack>
         </motion.div>
 
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
           {displayServices.map((service, index) => (
             <motion.div
               key={service.id}

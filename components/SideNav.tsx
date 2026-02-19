@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   IconButton,
   Box,
@@ -9,20 +9,27 @@ import {
   Drawer,
   DrawerContent,
   useDisclosure,
-  useColorModeValue,
   BoxProps,
   FlexProps,
-  VStack,
-  Button,
-  HStack,
   Link,
-  Image
+  Image,
+  Tooltip
 } from "@chakra-ui/react";
-import { FiHome, FiTrendingUp, FiCompass, FiStar, FiSettings, FiMenu } from "react-icons/fi";
+import {
+  FiHome,
+  FiTrendingUp,
+  FiCompass,
+  FiStar,
+  FiSettings,
+  FiMenu,
+  FiChevronLeft,
+  FiChevronRight
+} from "react-icons/fi";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { IconType } from "react-icons";
 import profileImage from "../images/profile.jpg";
 import { PersonalInfo } from "../types/resume";
+
 interface LinkItemProps {
   name: string;
   icon: IconType;
@@ -37,6 +44,9 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Contact", icon: FiSettings, href: "#contact" }
 ];
 
+const EXPANDED_W = "72";  // 18rem / 288px
+const COLLAPSED_W = "20"; // 5rem / 80px
+
 export default function SideNav({
   children,
   personalInfo
@@ -45,10 +55,20 @@ export default function SideNav({
   personalInfo: PersonalInfo;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <Box minH="100vh" backgroundColor={"#212428"}>
-      <SidebarContent onClose={() => onClose} personalInfo={personalInfo} />
+    <Box minH="100vh" backgroundColor="#212428">
+      {/* Desktop sidebar */}
+      <SidebarContent
+        onClose={onClose}
+        personalInfo={personalInfo}
+        isCollapsed={isCollapsed}
+        onToggle={() => setIsCollapsed((c) => !c)}
+        display={{ base: "none", md: "block" }}
+      />
+
+      {/* Mobile drawer */}
       <Drawer
         isOpen={isOpen}
         placement="left"
@@ -61,9 +81,17 @@ export default function SideNav({
           <SidebarContent onClose={onClose} personalInfo={personalInfo} />
         </DrawerContent>
       </Drawer>
-      {/* Mobile nav */}
+
+      {/* Mobile top bar */}
       <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 72 }}>{children}</Box>
+
+      {/* Main content — shifts with sidebar */}
+      <Box
+        ml={{ base: 0, md: isCollapsed ? COLLAPSED_W : EXPANDED_W }}
+        transition="margin-left 0.3s ease"
+      >
+        {children}
+      </Box>
     </Box>
   );
 }
@@ -71,102 +99,155 @@ export default function SideNav({
 interface SidebarProps extends BoxProps {
   onClose: () => void;
   personalInfo: PersonalInfo;
+  isCollapsed?: boolean;
+  onToggle?: () => void;
 }
 
-const SidebarContent = ({ onClose, personalInfo, ...rest }: SidebarProps) => {
+const SidebarContent = ({
+  onClose,
+  personalInfo,
+  isCollapsed = false,
+  onToggle,
+  ...rest
+}: SidebarProps) => {
   return (
     <Box
-      bg={useColorModeValue("#212428", "#212428")}
-      borderRight=".5px"
-      borderRightColor={useColorModeValue("gray.200", "gray.700")}
+      bg="#212428"
+      borderRight="1px solid rgba(255,255,255,0.06)"
       pos="fixed"
       h="full"
+      w={isCollapsed ? COLLAPSED_W : EXPANDED_W}
+      transition="width 0.3s ease"
+      overflow="hidden"
+      zIndex={100}
       {...rest}
-      p={4}
     >
-      <Flex pt={10} pb={10} alignItems="center" mx="8" justifyContent="space-between">
+      {/* Floating toggle button — sticks out from right edge */}
+      {onToggle && (
+        <Box
+          position="absolute"
+          right="-11px"
+          top="50%"
+          transform="translateY(-50%)"
+          w="22px"
+          h="22px"
+          bgGradient="linear(to-br, blue.500, purple.600)"
+          borderRadius="full"
+          display={{ base: "none", md: "flex" }}
+          alignItems="center"
+          justifyContent="center"
+          cursor="pointer"
+          onClick={onToggle}
+          zIndex={999}
+          boxShadow="0 0 14px rgba(66,153,225,0.55)"
+          _hover={{ transform: "translateY(-50%) scale(1.2)" }}
+          transition="transform 0.2s"
+        >
+          <Icon
+            as={isCollapsed ? FiChevronRight : FiChevronLeft}
+            color="white"
+            w="10px"
+            h="10px"
+          />
+        </Box>
+      )}
+
+      {/* Profile image */}
+      <Flex
+        pt={8}
+        pb={6}
+        alignItems="center"
+        justifyContent="center"
+        position="relative"
+        px={4}
+      >
         <Image
           src={profileImage.src}
-          boxSize="150px"
+          boxSize={isCollapsed ? "42px" : "130px"}
           borderRadius="full"
-          fit="cover"
-          alt="Naruto Uzumaki"
+          objectFit="cover"
+          alt="Vincent Vitale"
+          border="2px solid rgba(66,153,225,0.3)"
+          transition="all 0.3s ease"
+          flexShrink={0}
         />
-        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
-      </Flex>
-      {LinkItems.map((link) => (
-        <NavItem
-          color={"#e4e6ea"}
-          key={link.name}
-          icon={link.icon}
-          href={link.href}
+        <CloseButton
+          display={{ base: "flex", md: "none" }}
           onClick={onClose}
-          fontFamily={'"Montserrat",sans-serif'}
-          fontSize={"larger"}
-          opacity={0.8}
-        >
-          {link.name}
-        </NavItem>
-      ))}
-      <VStack pt={4} spacing={6} align="center" w="full">
-        <HStack spacing={6} justify="center">
-          <Link
-            href={personalInfo.linkedin}
-            isExternal
-            color="gray.200"
-            _hover={{
-              color: "#ff004d",
-              boxShadow: "0 0 8px rgba(255, 0, 77, 0.4)",
-              transform: "scale(1.1)"
-            }}
-            sx={{
-              transition: "all 0.3s ease-in-out",
-              "&:hover": {
-                boxShadow: "0 0 8px rgba(255, 0, 77, 0.4)",
-                transform: "scale(1.1)",
-                color: "#ff004d"
-              }
-            }}
-            transition="all 0.3s ease-in-out"
-          >
-            <Icon
-              as={FaLinkedin}
-              boxSize={8}
-              sx={{
-                transition: "all 0.3s ease-in-out"
-              }}
-            />
-          </Link>
+          color="white"
+          position="absolute"
+          right={3}
+          top={3}
+        />
+      </Flex>
 
-          <Link
-            href={personalInfo.github}
-            isExternal
-            color="gray.200"
-            _hover={{
-              color: "#ff004d",
-              boxShadow: "0 0 8px rgba(255, 0, 77, 0.4)",
-              transform: "scale(1.1)"
-            }}
-            sx={{
-              transition: "all 0.3s ease-in-out",
-              "&:hover": {
-                boxShadow: "0 0 8px rgba(255, 0, 77, 0.4)",
-                transform: "scale(1.1)",
-                color: "#ff004d"
-              }
-            }}
-            transition="all 0.3s ease-in-out"
+      {/* Nav links */}
+      <Box py={2}>
+        {LinkItems.map((link) => (
+          <NavItem
+            key={link.name}
+            icon={link.icon}
+            href={link.href}
+            isCollapsed={isCollapsed}
+            onClick={onClose}
+            color="#e4e6ea"
+            fontFamily='"Montserrat",sans-serif'
+            opacity={0.85}
           >
-            <Icon
-              as={FaGithub}
-              boxSize={8}
-              sx={{
-                transition: "all 0.3s ease-in-out"
-              }}
-            />
-          </Link>
-        </HStack>
-      </VStack>
+            {link.name}
+          </NavItem>
+        ))}
+      </Box>
+
+      {/* Social links — pinned to bottom */}
+      <Box position="absolute" bottom={6} w="full" px={2}>
+        <Flex
+          justify="center"
+          align="center"
+          direction={isCollapsed ? "column" : "row"}
+          gap={isCollapsed ? 4 : 6}
+        >
+          <Tooltip
+            label="LinkedIn"
+            placement="right"
+            isDisabled={!isCollapsed}
+            hasArrow
+            bg="#2a2a2a"
+            color="white"
+          >
+            <Link
+              href={personalInfo.linkedin}
+              isExternal
+              color="gray.400"
+              _hover={{ color: "#ff004d", transform: "scale(1.15)" }}
+              transition="all 0.3s ease"
+              display="flex"
+            >
+              <Icon as={FaLinkedin} boxSize={6} />
+            </Link>
+          </Tooltip>
+
+          <Tooltip
+            label="GitHub"
+            placement="right"
+            isDisabled={!isCollapsed}
+            hasArrow
+            bg="#2a2a2a"
+            color="white"
+          >
+            <Link
+              href={personalInfo.github}
+              isExternal
+              color="gray.400"
+              _hover={{ color: "#ff004d", transform: "scale(1.15)" }}
+              transition="all 0.3s ease"
+              display="flex"
+            >
+              <Icon as={FaGithub} boxSize={6} />
+            </Link>
+          </Tooltip>
+        </Flex>
+      </Box>
     </Box>
   );
 };
@@ -176,9 +257,17 @@ interface NavItemProps extends FlexProps {
   children: React.ReactNode;
   href?: string;
   onClick?: () => void;
+  isCollapsed?: boolean;
 }
 
-const NavItem = ({ icon, children, href = "#", onClick, ...rest }: NavItemProps) => {
+const NavItem = ({
+  icon,
+  children,
+  href = "#",
+  onClick,
+  isCollapsed = false,
+  ...rest
+}: NavItemProps) => {
   const handleClick = (e: React.MouseEvent) => {
     if (href.startsWith("#")) {
       e.preventDefault();
@@ -190,7 +279,7 @@ const NavItem = ({ icon, children, href = "#", onClick, ...rest }: NavItemProps)
     onClick?.();
   };
 
-  return (
+  const item = (
     <Box
       as="a"
       href={href}
@@ -200,44 +289,54 @@ const NavItem = ({ icon, children, href = "#", onClick, ...rest }: NavItemProps)
     >
       <Flex
         align="center"
-        p="4"
-        mx="4"
+        justify={isCollapsed ? "center" : "flex-start"}
+        p="3"
+        mx="2"
+        mb="1"
         borderRadius="lg"
         role="group"
         cursor="pointer"
+        transition="all 0.25s ease"
         _hover={{
           color: "#ff004d",
-          boxShadow: "0 0 10px rgba(255, 0, 77, 0.5)",
-          transform: "scale(1.01)",
-          transition: "all 0.3s ease-in-out"
-        }}
-        sx={{
-          transition: "all 0.3s ease-in-out",
-          "&:hover": {
-            boxShadow: "0 0 10px rgba(255, 0, 77, 0.5)",
-            transform: "scale(1.01)",
-            color: "#ff004d"
-          }
+          bg: "rgba(255,0,77,0.08)",
+          boxShadow: "0 0 12px rgba(255,0,77,0.2)"
         }}
         {...rest}
       >
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: "#ff004d"
-            }}
-            sx={{
-              transition: "all 0.3s ease-in-out"
-            }}
-            as={icon}
-          />
+        <Icon
+          as={icon}
+          fontSize="18"
+          mr={isCollapsed ? 0 : 3}
+          flexShrink={0}
+          _groupHover={{ color: "#ff004d" }}
+          transition="all 0.25s ease"
+        />
+        {!isCollapsed && (
+          <Text fontSize="sm" fontWeight="medium" whiteSpace="nowrap">
+            {children}
+          </Text>
         )}
-        {children}
       </Flex>
     </Box>
   );
+
+  if (isCollapsed) {
+    return (
+      <Tooltip
+        label={children}
+        placement="right"
+        hasArrow
+        bg="#2a2a2a"
+        color="white"
+        fontSize="sm"
+      >
+        {item}
+      </Tooltip>
+    );
+  }
+
+  return item;
 };
 
 interface MobileProps extends FlexProps {
@@ -247,31 +346,25 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   return (
     <Flex
-      ml={{ base: 0, md: 72 }}
-      px={{ base: 4, md: 4 }}
+      px={4}
       height="20"
       alignItems="center"
-      bg={useColorModeValue("white", "gray.900")}
+      bg="#212428"
       borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent={{ base: "space-between", md: "flex-end" }}
+      borderBottomColor="rgba(255,255,255,0.06)"
+      justifyContent="space-between"
       {...rest}
     >
       <IconButton
-        display={{ base: "flex", md: "none" }}
         onClick={onOpen}
         variant="outline"
         aria-label="open menu"
         icon={<FiMenu />}
+        color="white"
+        borderColor="rgba(255,255,255,0.2)"
+        _hover={{ borderColor: "rgba(255,255,255,0.4)", bg: "rgba(255,255,255,0.05)" }}
       />
-
-      <Text
-        display={{ base: "flex", md: "none" }}
-        fontSize="2xl"
-        fontFamily="monospace"
-        fontWeight="bold"
-        color="brand.600"
-      >
+      <Text fontSize="xl" fontFamily="monospace" fontWeight="bold" color="white">
         Vincent Vitale
       </Text>
     </Flex>

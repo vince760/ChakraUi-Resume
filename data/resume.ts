@@ -11,16 +11,44 @@ export const resumeData: ResumeData = {
     linkedin: "https://www.linkedin.com/in/vincent-vitale-v/",
     github: "https://github.com/vince760",
     summary:
-      "5+ years of experience in Full Stack development with expertise in modern web technologies."
+      "6+ years of experience in Full Stack development with expertise in modern web technologies."
   },
   experience: [
     {
       id: "1",
+      company: "DealerVision.com",
+      position: "Software Engineer",
+      location: "Remote",
+      startDate: "Aug - 2025",
+      endDate: "current",
+      description: [
+        "DealerVision.com delivers a one-stop digital showroom platform that brings vehicle merchandising in-house, including photo capture, background removal, walk-around video, labels, and media cloning backed by training, quality control, and syndication to help dealers sell more cars, faster.",
+        "Owned end-to-end delivery of Razor features from UX contract to production, building view models, server-side validation, Tag Helpers, partials, and anti-forgery protections.",
+        "Designed and built clean ASP.NET Core APIs (DTOs, Problem Details, FluentValidation, telemetry) to power Razor workflows with standardized error semantics and observability.",
+        "Architected a Hangfire-based scheduling platform for Facebook publishing of images and videos, including page authorization, secure token vaulting, automatic long-lived token refresh, and resilient retry/backoff behavior.",
+        "Modeled and optimized SQL Server performance with EF Core and Power Tools by normalizing schemas, creating filtered and covering indexes, and tuning queries for real-world workloads.",
+        "Authored stored procedures, views, and UDFs to support reporting and batch workflows, adding constraints, unique indexes, and transactional boundaries to protect data integrity.",
+        "Collaborated with product and operations to align features with dealer workflows, compliance requirements, and multi-tenant theming needs."
+      ],
+      technologies: [
+        "C#",
+        "ASP.NET Core",
+        "Razor Pages",
+        "Entity Framework Core",
+        "SQL Server",
+        "Hangfire",
+        "FluentValidation",
+        "OpenTelemetry",
+        "Facebook Graph API"
+      ]
+    },
+    {
+      id: "2",
       company: "OLI Systems",
-      position: "Fullstack Software Developer",
+      position: "Software Engineer",
       location: "Remote",
       startDate: "Mar - 2022",
-      endDate: "Current",
+      endDate: "July - 2025",
       description: [
         "OLI Systems delivers comprehensive, process modeling solutions for water chemistry-based industrial applications that enhance operational efficiency, sustainability, and engineering productivity while mitigating risk.",
         "Developed and optimized C# and Node.js API endpoints using Entity Framework, Express.js, and REMA architectural patterns, improving system maintainability and performance.",
@@ -30,10 +58,10 @@ export const resumeData: ResumeData = {
         "Automated CI/CD pipelines for full-stack application deployments, ensuring smooth, reliable, and scalable releases.",
         "Partnered with product managers to align software solutions with business requirements and compliance standards."
       ],
-      technologies: ["JavaScript", "Svelte", "Node.js", "AWS", "Keycloak", "Salesforce"]
+      technologies: ["JavaScript", "Svelte", "Node.js", "AWS", "Keycloak", "Salesforce", "Python"]
     },
     {
-      id: "2",
+      id: "3",
       company: "Outlayr",
       position: "Software Developer",
       location: "Remote",
@@ -61,7 +89,7 @@ export const resumeData: ResumeData = {
       ]
     },
     {
-      id: "3",
+      id: "4",
       company: "Source One Inventory Solutions",
       position: "Full Stack Developer",
       location: "Remote",
@@ -80,7 +108,7 @@ export const resumeData: ResumeData = {
       technologies: ["Custom Websites"]
     },
     {
-      id: "4",
+      id: "5",
       company: "Force Tracker",
       position: "Full Stack Developer",
       location: "Remote",
@@ -153,8 +181,7 @@ export const resumeData: ResumeData = {
     {
       id: "4",
       name: "VotaFlight",
-      description:
-        "Full-stack voting platform for simulators",
+      description: "Full-stack voting platform for simulators",
       technologies: [
         "C#",
         "ASP.NET",

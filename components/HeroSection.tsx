@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { PersonalInfo } from "../types/resume";
 import { useState, useEffect, useRef } from "react";
-import { Box, Container, VStack, Heading, Text, HStack, Icon } from "@chakra-ui/react";
+import { Box, Button, Container, VStack, Heading, Text, HStack, Icon } from "@chakra-ui/react";
 import { FaChevronDown } from "react-icons/fa";
 import GLOBE from "vanta/dist/vanta.globe.min";
 interface HeroSectionProps {
@@ -15,7 +15,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ personalInfo }) => {
   const vantaRef = useRef<HTMLDivElement>(null);
   const vantaEffect = useRef<any>(null);
 
-  const texts = ["Full Stack Developer", "React Specialist", "Node.js Expert", "Cloud Engineer"];
+  const texts = ["Software Engineer", "React Specialist", "Node.js Expert", "Cloud Engineer"];
 
   useEffect(() => {
     const timeout = setTimeout(
@@ -165,7 +165,45 @@ const HeroSection: React.FC<HeroSectionProps> = ({ personalInfo }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-          ></motion.div>{" "}
+          >
+            <HStack spacing={4} justify="center" flexWrap="wrap">
+              <Button
+                size="lg"
+                px={8}
+                borderRadius="full"
+                fontWeight="semibold"
+                bgGradient="linear(to-r, blue.500, purple.600)"
+                color="white"
+                _hover={{
+                  bgGradient: "linear(to-r, blue.400, purple.500)",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 12px 30px rgba(66,153,225,0.4)"
+                }}
+                transition="all 0.3s"
+                onClick={() => document.querySelector("#portfolio")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                View My Work
+              </Button>
+              <Button
+                size="lg"
+                px={8}
+                borderRadius="full"
+                fontWeight="semibold"
+                variant="outline"
+                color="white"
+                borderColor="rgba(255,255,255,0.35)"
+                _hover={{
+                  bg: "rgba(255,255,255,0.1)",
+                  borderColor: "white",
+                  transform: "translateY(-2px)"
+                }}
+                transition="all 0.3s"
+                onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                Get In Touch
+              </Button>
+            </HStack>
+          </motion.div>
         </VStack>
       </Container>
 

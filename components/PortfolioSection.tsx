@@ -8,13 +8,11 @@ import {
   Link,
   Icon,
   Flex,
-  Badge,
-  useColorModeValue
+  Badge
 } from "@chakra-ui/react";
 import { FiExternalLink } from "react-icons/fi";
 
 interface PortfolioProject {
-  id: number;
   name: string;
   url?: string;
   technologies: string[];
@@ -30,15 +28,8 @@ interface PortfolioSectionProps {
 const PortfolioSection: React.FC<PortfolioSectionProps> = ({ projects, title, type }) => {
   const filteredProjects = projects.filter((project) => project.type === type);
 
-  const bgColor = useColorModeValue("#1d191f", "#1d191f");
-
-  const cardBg = useColorModeValue(
-    type === "professional" ? "gray.50" : "white",
-    type === "professional" ? "gray.700" : "gray.800"
-  );
-
   return (
-    <Box as="section" py={20} bg={bgColor}>
+    <Box as="section" id={type === "professional" ? "portfolio" : undefined} py={20} bg="#1d191f">
       <Container maxW="container.xl" px={6}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -47,43 +38,52 @@ const PortfolioSection: React.FC<PortfolioSectionProps> = ({ projects, title, ty
           transition={{ duration: 0.8 }}
         >
           <Box textAlign="center" mb={16}>
-            <Heading fontSize={{ base: "4xl", md: "5xl" }} fontWeight="bold" color="#c3cede" mb={4}>
+            <Heading fontSize={{ base: "4xl", md: "5xl" }} fontWeight="bold" color="white" mb={4}>
               {title}
             </Heading>
+            <Box
+              w="60px"
+              h="3px"
+              bgGradient="linear(to-r, blue.400, purple.500)"
+              mx="auto"
+              borderRadius="full"
+            />
           </Box>
         </motion.div>
 
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           {filteredProjects.map((project, index) => (
             <motion.div
-              key={project.id}
+              key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
             >
               <Box
-                bg={cardBg}
-                borderRadius="lg"
-                boxShadow="lg"
-                _hover={{
-                  boxShadow: "xl",
-                  transform: "translateY(-8px)"
-                }}
-                transition="all 0.3s"
+                bg="rgba(255,255,255,0.04)"
+                border="1px solid rgba(255,255,255,0.08)"
+                borderRadius="xl"
                 p={6}
                 role="group"
+                transition="all 0.3s"
+                _hover={{
+                  bg: "rgba(255,255,255,0.07)",
+                  border: "1px solid rgba(99,179,237,0.3)",
+                  transform: "translateY(-6px)",
+                  boxShadow: "0 20px 40px rgba(0,0,0,0.4)"
+                }}
               >
                 <Flex justify="space-between" align="flex-start" mb={4}>
                   <Heading
-                    fontSize="2xl"
+                    fontSize="xl"
                     fontWeight="bold"
-                    color="gray.900"
-                    _groupHover={{ color: "blue.600" }}
-                    transition="colors 0.3s"
+                    color="white"
+                    _groupHover={{ color: "blue.300" }}
+                    transition="color 0.3s"
                   >
                     {project.url ? (
-                      <Link href={project.url} isExternal _hover={{ textDecoration: "underline" }}>
+                      <Link href={project.url} isExternal _hover={{ textDecoration: "none" }}>
                         {project.name}
                       </Link>
                     ) : (
@@ -94,9 +94,9 @@ const PortfolioSection: React.FC<PortfolioSectionProps> = ({ projects, title, ty
                     <Link
                       href={project.url}
                       isExternal
-                      color="blue.600"
-                      _hover={{ color: "blue.800" }}
-                      transition="colors 0.3s"
+                      color="gray.600"
+                      _groupHover={{ color: "blue.300" }}
+                      transition="color 0.3s"
                     >
                       <Icon as={FiExternalLink} boxSize={5} />
                     </Link>
@@ -109,13 +109,13 @@ const PortfolioSection: React.FC<PortfolioSectionProps> = ({ projects, title, ty
                       key={techIndex}
                       px={3}
                       py={1}
-                      bg="blue.100"
-                      color="blue.800"
-                      fontSize="sm"
+                      bg="rgba(66,153,225,0.12)"
+                      color="blue.300"
+                      fontSize="xs"
                       fontWeight="medium"
                       borderRadius="full"
-                      _hover={{ bg: "blue.200" }}
-                      transition="colors 0.3s"
+                      border="1px solid rgba(66,153,225,0.25)"
+                      textTransform="none"
                     >
                       {tech}
                     </Badge>

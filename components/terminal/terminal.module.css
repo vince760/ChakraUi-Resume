@@ -92,6 +92,75 @@
   }
 }
 
+/* CRT power-on: the whole shell warms up like a tube monitor switching on,
+ * a single horizontal line that flashes bright and expands to full height.
+ * One-shot on mount (`both` holds the end state); killed under reduced motion. */
+.crtOn {
+  animation: crtOn 0.62s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transform-origin: center;
+}
+
+@keyframes crtOn {
+  0% {
+    transform: scaleX(1.15) scaleY(0.0016);
+    filter: brightness(4.5);
+    opacity: 0.2;
+  }
+  34% {
+    transform: scaleX(1.15) scaleY(0.0016);
+    filter: brightness(4.5);
+    opacity: 1;
+  }
+  52% {
+    transform: scaleX(1) scaleY(0.02);
+    filter: brightness(3);
+  }
+  72% {
+    transform: scaleX(1) scaleY(1);
+    filter: brightness(1.7);
+  }
+  100% {
+    transform: scaleX(1) scaleY(1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+}
+
+/* Command scan-flash: a soft phosphor band sweeps down a freshly rendered
+ * output block once, as if the CRT is painting the result. Contained to the
+ * block, fades out as it exits, pointer-events off so it never blocks clicks. */
+.scanFlash {
+  position: relative;
+}
+
+.scanFlash::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  top: 0;
+  height: 32%;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(74, 222, 128, 0.16));
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.1);
+  animation: scanFlash 0.5s ease-out both;
+}
+
+@keyframes scanFlash {
+  0% {
+    opacity: 0;
+    transform: translateY(-60%);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(360%);
+  }
+}
+
 /* Blinking block cursor on the live prompt line. */
 .cursor {
   display: inline-block;
@@ -148,9 +217,14 @@
   }
   .fill,
   .reveal,
-  .drop {
+  .drop,
+  .crtOn {
     animation: none;
     opacity: 1;
     transform: none;
+    filter: none;
+  }
+  .scanFlash::after {
+    display: none;
   }
 }

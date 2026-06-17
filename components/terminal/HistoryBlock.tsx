@@ -4,6 +4,7 @@ import { terminalResume } from "../../data/terminalResume";
 import { COMMANDS, HistoryItem, SECTIONS, Tone } from "./commands";
 import BuildLog from "./BuildLog";
 import Contributions from "./Contributions";
+import DecodeBanner from "./DecodeBanner";
 import Prompt from "./Prompt";
 import Section from "./Section";
 
@@ -48,13 +49,12 @@ const HistoryBlock: React.FC<Props> = ({ item, run }) => {
     case "welcome":
       return (
         <div className="mb-3.5">
-          <pre
+          <DecodeBanner
+            text={BANNER}
             className={`${styles.glow} mb-3.5 whitespace-pre font-mono leading-tight text-terminal-green`}
             style={{ fontSize: "clamp(7px, 1.9vw, 12px)" }}
-            aria-label={terminalResume.name}
-          >
-            {BANNER}
-          </pre>
+            ariaLabel={terminalResume.name}
+          />
           <div>
             Hi, I&apos;m{" "}
             <span className="font-semibold text-terminal-bright">{terminalResume.name}</span>,{" "}
@@ -82,7 +82,7 @@ const HistoryBlock: React.FC<Props> = ({ item, run }) => {
 
     case "help":
       return (
-        <div className="mb-2">
+        <div className={`${styles.scanFlash} mb-2`}>
           <div className="text-terminal-bright">available commands:</div>
           {COMMANDS.map(([c, d]) => {
             const base = c.split(" ")[0];
@@ -109,7 +109,9 @@ const HistoryBlock: React.FC<Props> = ({ item, run }) => {
 
     case "ls":
       return (
-        <div className="mb-2 grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] gap-x-4">
+        <div
+          className={`${styles.scanFlash} mb-2 grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] gap-x-4`}
+        >
           {SECTIONS.map((s) => (
             <button
               key={s}
@@ -125,13 +127,21 @@ const HistoryBlock: React.FC<Props> = ({ item, run }) => {
       );
 
     case "build":
-      return <BuildLog />;
+      return (
+        <div className={styles.scanFlash}>
+          <BuildLog />
+        </div>
+      );
 
     case "contributions":
       return <Contributions run={run} />;
 
     case "section":
-      return <Section section={item.key} run={run} />;
+      return (
+        <div className={styles.scanFlash}>
+          <Section section={item.key} run={run} />
+        </div>
+      );
 
     default:
       return null;

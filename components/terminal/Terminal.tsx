@@ -172,13 +172,32 @@ const Terminal: React.FC = () => {
       e.preventDefault();
       const match = autocomplete(input);
       if (match) setInput(match);
+    } else if (e.key === "ArrowRight") {
+      // Accept the ghost suggestion only when the caret sits at the end of the
+      // line, so mid-line cursor movement still works normally.
+      const el = e.currentTarget;
+      const atEnd = el.selectionStart === input.length && el.selectionEnd === input.length;
+      const sug = autocomplete(input);
+      if (atEnd && sug && sug !== input && sug.startsWith(input)) {
+        e.preventDefault();
+        setInput(sug);
+      }
     }
   };
+
+  // Ghost autocomplete: the predicted completion shown as dim text trailing the
+  // cursor. Only when the suggestion literally extends what's typed, so it stays
+  // aligned (uppercase / leading-space input simply shows no ghost).
+  const suggestion = form ? null : autocomplete(input);
+  const ghost =
+    suggestion && suggestion !== input && suggestion.startsWith(input)
+      ? suggestion.slice(input.length)
+      : "";
 
   return (
     <div
       onClick={focusInput}
-      className={`${styles.app} flex h-screen flex-col font-mono text-[13.5px] leading-relaxed text-terminal-fg`}
+      className={`${styles.app} ${styles.crtOn} flex h-screen flex-col font-mono text-[13.5px] leading-relaxed text-terminal-fg`}
     >
       {/* Title bar */}
       <header className="flex items-center gap-2 border-b border-terminal-border bg-terminal-chrome px-4 py-2">
@@ -253,6 +272,11 @@ const Terminal: React.FC = () => {
               )}
               <span className={`${styles.glow} text-terminal-bright`}>{input}</span>
               <span className={styles.cursor} aria-hidden="true" />
+              {ghost && (
+                <span className="text-terminal-dim" aria-hidden="true">
+                  {ghost}
+                </span>
+              )}
               <label htmlFor="terminal-input" className="sr-only">
                 Terminal command input. Type a command such as help, ls, or cat experience, then
                 press Enter.

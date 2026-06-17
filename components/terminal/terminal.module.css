@@ -43,6 +43,37 @@
   );
 }
 
+/* Build pipeline: bars fill left-to-right and statuses reveal in sequence.
+ * Per-stage delay is set inline; `both` holds the start state until each
+ * stage's turn, so reduced motion (animation off) lands on the finished state. */
+.fill {
+  width: 100%;
+  animation: fillBar 0.55s ease-out both;
+}
+
+@keyframes fillBar {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.reveal {
+  opacity: 1;
+  animation: revealIn 0.3s ease-out both;
+}
+
+@keyframes revealIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* Blinking block cursor on the live prompt line. */
 .cursor {
   display: inline-block;
@@ -96,5 +127,9 @@
   .rec {
     animation: none;
     opacity: 1;
+  }
+  .fill,
+  .reveal {
+    animation: none;
   }
 }

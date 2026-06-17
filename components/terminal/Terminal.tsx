@@ -273,8 +273,8 @@ const Terminal: React.FC = () => {
                 className="absolute h-px w-px border-none p-0 opacity-0"
               />
               <p id="terminal-help" className="sr-only">
-                Available commands: help, ls, cat, whoami, message, open, email, clear. Use Tab to
-                autocomplete and the up and down arrows for command history.
+                Available commands: help, ls, cat, whoami, credits, message, open, email, clear. Use
+                Tab to autocomplete and the up and down arrows for command history.
               </p>
             </div>
           )}

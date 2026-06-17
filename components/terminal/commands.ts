@@ -20,6 +20,7 @@ export type HistoryItem =
   | { kind: "welcome" }
   | { kind: "help" }
   | { kind: "ls" }
+  | { kind: "build" } // "git log" style colophon
   | { kind: "section"; key: SectionKey }
   | { kind: "text"; tone: Tone; text: string };
 
@@ -34,6 +35,7 @@ export const COMMANDS: Array<[string, string]> = [
   ["ls", "list resume sections"],
   ["cat <section>", "read a section (e.g. cat experience)"],
   ["whoami", "the short version"],
+  ["credits", "live monitor of who built this (top)"],
   ["message", "send me a message, right here"],
   ["open <linkedin|github|site>", "open a link"],
   ["email", "compose an email to me"],
@@ -85,6 +87,15 @@ export function runCommand(raw: string): RunResult {
       return { items: [{ kind: "ls" }] };
     case "whoami":
       return { items: [{ kind: "section", key: "about" }] };
+
+    case "credits":
+    case "colophon":
+    case "build":
+    case "made":
+    case "top":
+    case "htop":
+    case "git": // the only git around here is the colophon
+      return { items: [{ kind: "build" }] };
     case "clear":
     case "cls":
       return { items: [], clear: true };
@@ -123,6 +134,9 @@ export function autocomplete(input: string): string | null {
     "ls",
     "clear",
     "whoami",
+    "credits",
+    "top",
+    "git log",
     "message",
     "email",
     ...SECTIONS.map((s) => `cat ${s}`),

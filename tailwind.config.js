@@ -19,6 +19,20 @@ module.exports = {
           700: "#1d4ed8",
           800: "#1e40af",
           900: "#1e3a8a"
+        },
+        // Terminal page tokens. Green primary, blue + amber secondary accents.
+        terminal: {
+          bg: "#08090c", // near-black full-bleed background + terminal body
+          chrome: "#10151c", // faux window title bar
+          chip: "#0e131a", // chip / tag background
+          border: "#1a222c", // hairline borders
+          fg: "#c9d4e0", // default text
+          bright: "#f1f6fb", // emphasized text
+          dim: "#5c6b7a", // muted text / secondary chrome
+          green: "#4ade80", // primary accent (prompt, ok, links)
+          blue: "#38bdf8", // secondary accent
+          amber: "#fbbf24", // headers / fun fallbacks
+          red: "#f87171" // errors / close dot
         }
       },
       fontFamily: {

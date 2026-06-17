@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+/* JetBrains Mono powers the terminal page. Two weights only: regular + bold. */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -53,6 +55,19 @@
 
   .card-hover {
     @apply transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl;
+  }
+
+  /* Terminal resume: clickable elements (links, inline commands, chips). */
+  .term-link {
+    @apply text-terminal-blue underline-offset-2 hover:underline cursor-pointer rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green;
+  }
+
+  .term-cmd {
+    @apply cursor-pointer hover:text-terminal-green rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green;
+  }
+
+  .term-chip {
+    @apply inline-block rounded-md border border-terminal-border bg-terminal-chip px-2.5 py-1 text-[12.5px] text-terminal-fg cursor-pointer transition-colors hover:bg-terminal-border hover:text-terminal-bright focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green;
   }
 }
 

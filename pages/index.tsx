@@ -1,108 +1,37 @@
-import Layout from "../components/Layout";
-import HeroSection from "../components/HeroSection";
-import ServicesSection from "../components/ServicesSection";
-import PortfolioSection from "../components/PortfolioSection";
-import ResumeSection from "../components/ResumeSection";
-import ContactSection from "../components/ContactSection";
-import { resumeData } from "../data/resume";
+import Head from "next/head";
+import Terminal from "../components/terminal/Terminal";
+import { terminalResume } from "../data/terminalResume";
 
-// Prepare portfolio data
-const portfolioProjects = [
-  ...resumeData.projects.map((project) => ({
-    id: parseInt(project.id),
-    name: project.name,
-    url: project.liveUrl,
-    technologies: project.technologies,
-    type: "personal" as const
-  })),
-  {
-    name: "DealerVision.Com",
-    url: "https://www.dealervision.com/",
-    technologies: [
-      "C#",
-      "ASP.NET Core",
-      "Razor Pages",
-      "Entity Framework Core",
-      "SQL Server",
-      "Hangfire",
-      "FluentValidation",
-      "OpenTelemetry",
-      "Facebook Graph API"
-    ],
-    type: "professional" as const
-  },
-  {
-    name: "OLI Systems",
-    url: "https://www.olisystems.com/",
-    technologies: [
-      "JAVASCRIPT",
-      "SVELTE",
-      "NODE-JS",
-      "AWS",
-      "KEYCLOAK",
-      "SALESFORCE",
-      "Kubernetes",
-      "Docker",
-      "PostgreSQL",
-      "Redis",
-      "Python",
-      "Docker"
-    ],
-    type: "professional" as const
-  },
-  {
-    name: "Outlayr",
-    url: "https://www.outlayr.com/",
-    technologies: [
-      "REACT",
-      "JAVASCRIPT",
-      "C#",
-      "ASP.NET",
-      "T-SQL",
-      "SENDGRID",
-      "TWILIO",
-      "AWS",
-      "AZURE",
-      "Kotlin",
-      "Swift"
-    ],
-    type: "professional" as const
-  },
-  {
-    name: "Source One Inventory Solutions",
-
-    technologies: ["React", "MUI", "Node.js", "MSSQL", "Shopify", ".NET", "C#"],
-    type: "professional" as const
-  },
-  {
-    name: "Force Tracker",
-
-    technologies: ["REACT", "JAVASCRIPT", "C#", "ASP.NET", "T-SQL"],
-    type: "professional" as const
-  }
-];
+const { name, role } = terminalResume;
+const TITLE = `${name} — ${role} // interactive terminal resume`;
+const DESCRIPTION =
+  "Explore Vincent Vitale's resume as an interactive command line. Type or click commands like ls, cat experience, and whoami to browse experience, projects, and skills.";
+const URL = terminalResume.links.site;
 
 const IndexPage = () => (
-  <Layout
-    personalInfo={resumeData.personalInfo}
-    title={`${resumeData.personalInfo.name} - ${resumeData.personalInfo.title}`}
-    description={resumeData.personalInfo.summary}
-  >
-    <HeroSection personalInfo={resumeData.personalInfo} />
-    <ServicesSection />
-    <PortfolioSection
-      projects={portfolioProjects}
-      title="My Professional Portfolio"
-      type="professional"
-    />
-    <PortfolioSection projects={portfolioProjects} title="My Personal Portfolio" type="personal" />
-    <ResumeSection
-      experiences={resumeData.experience}
-      education={resumeData.education}
-      skills={resumeData.skills}
-    />
-    <ContactSection personalInfo={resumeData.personalInfo} />
-  </Layout>
+  <>
+    <Head>
+      <title>{TITLE}</title>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <meta name="description" content={DESCRIPTION} />
+      <meta name="theme-color" content="#08090c" />
+      <link rel="icon" href="/favicon.ico" />
+
+      {/* Open Graph */}
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={TITLE} />
+      <meta property="og:description" content={DESCRIPTION} />
+      <meta property="og:url" content={URL} />
+      <meta property="og:site_name" content={name} />
+
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={TITLE} />
+      <meta name="twitter:description" content={DESCRIPTION} />
+    </Head>
+    <Terminal />
+  </>
 );
 
 export default IndexPage;

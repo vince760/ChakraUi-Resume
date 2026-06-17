@@ -74,6 +74,24 @@
   }
 }
 
+/* Contribution squares drop into place from above. Each cell's delay is set
+ * inline to a random value so the grid fills in a scattered order; `both`
+ * holds the start state (hidden, lifted) until the cell's turn. */
+.drop {
+  animation: dropIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Blinking block cursor on the live prompt line. */
 .cursor {
   display: inline-block;
@@ -129,7 +147,10 @@
     opacity: 1;
   }
   .fill,
-  .reveal {
+  .reveal,
+  .drop {
     animation: none;
+    opacity: 1;
+    transform: none;
   }
 }

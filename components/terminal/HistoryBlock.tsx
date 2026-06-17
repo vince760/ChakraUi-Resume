@@ -3,6 +3,7 @@ import styles from "./terminal.module.css";
 import { terminalResume } from "../../data/terminalResume";
 import { COMMANDS, HistoryItem, SECTIONS, Tone } from "./commands";
 import BuildLog from "./BuildLog";
+import Contributions from "./Contributions";
 import Prompt from "./Prompt";
 import Section from "./Section";
 
@@ -15,7 +16,7 @@ const TONE_CLASS: Record<Tone, string> = {
   red: "text-terminal-red"
 };
 
-const WELCOME_CHIPS = ["help", "ls", "cat experience", "message", "credits"];
+const WELCOME_CHIPS = ["help", "ls", "cat experience", "contributions", "message", "credits"];
 
 // ASCII banner spelling "Vitale".
 const BANNER = String.raw`
@@ -125,6 +126,9 @@ const HistoryBlock: React.FC<Props> = ({ item, run }) => {
 
     case "build":
       return <BuildLog />;
+
+    case "contributions":
+      return <Contributions run={run} />;
 
     case "section":
       return <Section section={item.key} run={run} />;

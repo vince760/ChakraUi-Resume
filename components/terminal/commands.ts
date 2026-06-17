@@ -21,6 +21,7 @@ export type HistoryItem =
   | { kind: "help" }
   | { kind: "ls" }
   | { kind: "build" } // "git log" style colophon
+  | { kind: "contributions" } // github contribution heatmap
   | { kind: "section"; key: SectionKey }
   | { kind: "text"; tone: Tone; text: string };
 
@@ -36,6 +37,7 @@ export const COMMANDS: Array<[string, string]> = [
   ["cat <section>", "read a section (e.g. cat experience)"],
   ["whoami", "the short version"],
   ["credits", "live monitor of who built this (top)"],
+  ["contributions", "my github activity graph (last year)"],
   ["message", "send me a message, right here"],
   ["open <linkedin|github|site>", "open a link"],
   ["email", "compose an email to me"],
@@ -96,6 +98,14 @@ export function runCommand(raw: string): RunResult {
     case "htop":
     case "git": // the only git around here is the colophon
       return { items: [{ kind: "build" }] };
+    case "contributions":
+    case "contrib":
+    case "graph":
+    case "activity":
+    case "streak":
+    case "commits":
+    case "gh":
+      return { items: [{ kind: "contributions" }] };
     case "clear":
     case "cls":
       return { items: [], clear: true };
@@ -137,6 +147,7 @@ export function autocomplete(input: string): string | null {
     "credits",
     "top",
     "git log",
+    "contributions",
     "message",
     "email",
     ...SECTIONS.map((s) => `cat ${s}`),

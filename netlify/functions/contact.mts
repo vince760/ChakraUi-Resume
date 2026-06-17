@@ -39,7 +39,10 @@ export default async (req: Request): Promise<Response> => {
   const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     const { data, error } = await resend.emails.send({
-      from: "Resume Terminal <onboarding@resend.dev>",
+      // Must be an address on a Resend-verified domain. redline-commerce.com is
+      // verified on the account; the mailbox need not exist (it is just the
+      // From header). Replies go to the visitor via replyTo below.
+      from: "Resume Terminal <resume@redline-commerce.com>",
       to: [TO],
       replyTo: email,
       subject: `Portfolio message from ${name}`,

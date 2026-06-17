@@ -47,12 +47,12 @@ export default async (req: Request): Promise<Response> => {
     });
     if (error) {
       console.error("[contact] resend error:", error);
-      return json({ error: "Could not send right now." }, 502);
+      return json({ error: error.message || "Resend rejected the message." }, 502);
     }
     console.log(`[contact] sent ok, resend id=${data?.id}`);
     return json({ ok: true, id: data?.id ?? null }, 200);
   } catch (err) {
     console.error("[contact] unexpected error:", err);
-    return json({ error: "Could not send right now." }, 502);
+    return json({ error: err instanceof Error ? err.message : "Unexpected server error." }, 502);
   }
 };

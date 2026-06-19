@@ -3,7 +3,7 @@ import Terminal from "../components/terminal/Terminal";
 import { terminalResume } from "../data/terminalResume";
 
 const { name, role } = terminalResume;
-const TITLE = `${name} — ${role} // interactive terminal resume`;
+const TITLE = `${name} - ${role} // interactive terminal resume`;
 const DESCRIPTION =
   "Explore Vincent Vitale's resume as an interactive command line. Type or click commands like ls, cat experience, and whoami to browse experience, projects, and skills.";
 const URL = terminalResume.links.site;
